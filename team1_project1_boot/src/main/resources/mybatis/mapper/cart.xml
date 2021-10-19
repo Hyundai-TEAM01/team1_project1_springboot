@@ -82,7 +82,7 @@
 	<select id="getCartDetailByOption" resultType="cartDetail">
 		SELECT * FROM cartdetail 
 		WHERE pcode = (SELECT pcode FROM cartdetail WHERE cartdetailno = #{param1}) 
-				AND pcolor = #{param2} AND psize = #{param3}
+				AND pcolor = #{param2} AND psize = #{param3} AND isdeleted = 0
 	</select>
 	
 	<select id="getCartProductCount" resultType="int">
