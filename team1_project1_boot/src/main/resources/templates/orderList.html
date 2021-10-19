@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{common/layout2::setContent(~{this::content})}">
+<th:block th:fragment="content">
+
+	<link rel="stylesheet" th:href="@{/css/orderList.css}" />
+
+	        <h1 class="pg-title">주문 내역</h1>
+	        <div class="ui container">
+	            <form class="order-form">
+	                <ul>
+	                    <li>
+	                        <label
+	                            ><i class="circle outline icon"></i>조회기간</label
+	                        >
+	                        <input
+	                            class="date"
+	                            type="date"
+	                            name="startdate"
+	                        />
+	                        <span>-</span>
+	                        <input
+	                            class="date"
+	                            type="date"
+	                            name="enddate"
+	                        />
+	                        <a id="setdatebtn1" href="javascript:void(0);" class="date-button">1주일</a>
+	                        <a id="setdatebtn2" href="javascript:void(0);" class="date-button">1개월</a>
+	                        <a id="setdatebtn3" href="javascript:void(0);" class="date-button">3개월</a>
+	                    </li>
+	                    <li>
+	                        <label
+	                            ><i class="circle outline icon"></i>검색구분</label
+	                        >
+	                        <select class="ui dropdown" name="searchtype">
+	                            <option value="pname">상품명</option>
+	                            <option value="porderno">주문번호</option>
+	                        </select>
+	                        <input
+	                            class="search"
+	                            type="text"
+	                            name="search"
+	                            placeholder=""
+	                        />
+	                    </li>
+	                </ul>
+	                <button class="submit-btn" type="submit">Submit</button>
+	            </form>
+	
+	            
+            	<h3 class="pt-subtitle">상품 주문 목록</h3>
+	
+	            <table class="pt-table">
+	                <thead>
+	                    <tr>
+	                        <th>주문번호</th>
+	                        <th class="pt-infos">상품정보</th>
+	                        <th>수량</th>
+	                        <th>판매가</th>
+	                        <th>주문상태</th>
+	                        <th>구분</th>
+	                    </tr>
+	                </thead>
+	                <!-- Ajax 주문 목록 테이블 tr 생성 -->
+	                <tbody id="otable"></tbody>
+	            </table>
+	            <!-- Ajax 주문 페이징 버튼 생성 -->
+	            <div class="paging"></div>
+	</div>
+	<script th:src="@{/js/orderList.js}"></script>
+
+</th:block>
+</th:block>
+
+</html>
