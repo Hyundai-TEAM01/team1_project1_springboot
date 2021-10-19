@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycompany.webapp.dao.OrderDAO">
+	<!-- 주문 목록 페이지 불러오기 -->
+	<resultMap id="OrderListResult" type="orderList">
+	    <result property="porderno" column="PORDERNO"/>
+	    <result property="porderdate" column="PORDERDATE"/>
+	    <collection property="orderItems" column="PORDERNO" javaType="java.util.ArrayList" ofType="orderItem" select="getOrderItem"/>
+	</resultMap>
+
+	<!-- 주문 목록 가져오기(유저번호 + 페이징 + 검색쿼리[상품명, 주문번호]) -->
+	<select id="getOrderListByPage" resultMap="OrderListResult">
+		SELECT rnum, porderno, porderdate
+		FROM (
+		SELECT ROWNUM AS rnum, porderno, porderdate
+			FROM (
+				SELECT distinct(po.porderno), po.porderdate
+				FROM productorder po, porderdetail pod, product prd
+        		WHERE po.porderno = pod.porderno
+        		AND pod.pcode = prd.pcode
+				AND mno = #{mno}
+				AND po.porderdate BETWEEN TO_DATE(#{query.sterm}, 'YYYY-MM-DD') AND TO_DATE(#{query.eterm}, 'YYYY-MM-DD') + 1
+				<if test='query.searchType.equals("pname")'>
+				AND LOWER(prd.pname) LIKE '%' || LOWER(#{query.searchWord}) || '%'
+				</if>
+				<if test='query.searchType.equals("porderno")'>
+				AND po.porderno LIKE '%' || #{query.searchWord} || '%'
+				</if>
+				
+				ORDER BY po.porderdate DESC
+			)
+		WHERE ROWNUM &lt;= #{pager.endRowNo}  <!-- endRowNo -->
+		)
+		WHERE rnum &gt;= #{pager.startRowNo} <!-- startRowNo -->
+	</select>
+	
+	<!-- 주문 목록 갯수 가져오기(유저번호 + 페이징 + 검색쿼리[상품명, 주문번호]) -->
+	<select id="getOrderListCount" resultType="int">
+		SELECT COUNT(DISTINCT(po.porderno)) 
+		FROM productorder po, porderdetail pod, product prd
+       	WHERE po.porderno = pod.porderno
+       	AND pod.pcode = prd.pcode
+		AND mno = #{mno}
+		AND po.porderdate BETWEEN TO_DATE(#{query.sterm}, 'YYYY-MM-DD') AND TO_DATE(#{query.eterm}, 'YYYY-MM-DD') + 1
+		<if test='query.searchType.equals("pname")'>
+		AND LOWER(prd.pname) LIKE '%' || LOWER(#{query.searchWord}) || '%'
+		</if>
+		<if test='query.searchType.equals("porderno")'>
+		AND po.porderno LIKE '%' || #{query.searchWord} || '%'
+		</if>
+	</select>
+	
+	<!-- 주문 목록, 상세 페이지 주문상품아이템 -->
+	<select id="getOrderItem" resultType="orderItem">
+		SELECT pod.podno, pod.porderno, pod.pcode, pod.pcolor, pod.psize, pod.podprice, pod.podamount, pod.podstatus, pimg.imgurl1, p.pbrand, p.pname, p.pprice
+		FROM porderdetail pod, productimg pimg, product p
+		WHERE pod.porderno = #{porderno} AND pod.pcode = pimg.pcode AND pod.pcode = p.pcode AND pod.pcolor = pimg.pcolor
+	</select>
+	
+	<!-- 주문상세페이지 불러오기  -->	
+	<resultMap id="OrderDetailResult" type="orderDetail">
+	    <result property="porderno" column="PORDERNO"/>
+	    <result property="mno" column="MNO"/>
+	    <result property="pordermphone" column="PORDERMPHONE"/>
+	    <result property="pordername" column="PORDERNAME"/>
+	    <result property="porderphone" column="PORDERPHONE"/>
+	    <result property="porderaddr1" column="PORDERADDR1"/>
+	    <result property="porderaddr2" column="PORDERADDR2"/>
+	    <result property="porderaddr3" column="PORDERADDR3"/>
+	    <result property="pordertel" column="PORDERTEL"/>
+	    <result property="porderrequest" column="PORDERREQUEST"/>
+	    <result property="porderemail" column="PORDEREMAIL"/>
+	    <result property="pordertotalorgprice" column="PORDERTOTALORGPRICE"/>
+	    <result property="porderdiscount" column="PORDERDISCOUNT"/>
+	    <result property="porderpayprice" column="PORDERPAYPRICE"/>
+	    <result property="pordertotalpoint" column="PORDERTOTALPOINT"/>
+	    <result property="porderdate" column="PORDERDATE"/>
+	    <result property="porderdonedate" column="PORDERDONEDATE"/>
+	    <result property="porderpayment" column="PORDERPAYMENT"/>
+	    <result property="porderpayname" column="PORDERPAYNAME"/>
+	    <result property="porderpayno" column="PORDERPAYNO"/>
+	    <collection property="orderItems" column="PORDERNO" javaType="java.util.ArrayList" ofType="orderItem" select="getOrderItem"/>
+	</resultMap>
+	
+	<select id="getOrderDetail" resultMap="OrderDetailResult" parameterType="int">
+		SELECT porderno, mno, pordermphone, pordername, porderphone,
+		 porderaddr1, porderaddr2, porderaddr3, pordertel,
+		 porderrequest, porderemail, pordertotalorgprice,
+		 porderdiscount, porderpayprice, pordertotalpoint,
+		 porderdate, porderdonedate, porderpayment,
+		 porderpayname, porderpayno, porderpayinstallment
+		FROM productorder
+		WHERE mno = #{param1} AND porderno = #{param2}
+	</select>
+	
+	<insert id="createOrder" parameterType="productOrder">
+		<selectKey keyProperty="porderno" resultType="int" order="BEFORE">
+    		SELECT SEQ_PORDERNO.NEXTVAL FROM DUAL
+  		</selectKey>
+	
+		INSERT INTO productorder VALUES(#{porderno}, #{mno}, #{pordermphone},#{pordername},#{porderphone},#{porderaddr1},
+		#{porderaddr2},#{porderaddr3},#{pordertel},#{porderrequest},#{porderemail},#{pordertotalorgprice},#{porderdiscount},#{porderpayprice}
+		,#{pordertotalpoint},SYSDATE,null,#{porderpayment},#{porderpayname},#{porderpayno},#{porderpayinstallment})
+	
+	</insert>
+	
+	<update id="createOrderDetailByList" >
+		<foreach collection="list" item="pod" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+		 	INTO porderdetail VALUES
+				( FN_GET_SEQ('SEQ_PODNO'), #{pod.porderno}, #{pod.pcode}, #{pod.pcolor}, #{pod.psize}, #{pod.podprice},#{pod.podamount},#{pod.podstatus})
+		</foreach>
+	</update>
+</mapper>

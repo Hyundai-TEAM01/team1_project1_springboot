@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mycompany.webapp.dao.MemberDao">
-	<insert id="insert" parameterType="member">
-		INSERT INTO member 
-		(mid, mname, mpassword, menabled, mrole, memail) 
-		VALUES(#{mid}, #{mname}, #{mpassword}, #{menabled}, #{mrole}, #{memail})
-	</insert>
-	
-	<select id="selectByMid" parameterType="string" resultType="member">
-		SELECT mid, mname, mpassword, menabled, mrole, memail
+<mapper namespace="com.mycompany.webapp.dao.MemberDAO">
+	<!-- 로그인된 유저의 정보 가져오기 -->
+	<select id="getLoginMember" resultType="member" parameterType="string">
+		SELECT mno, mid, mpassword, memail, mname, mbirth,
+				mphone, mregdate, menable, mpoint, mrole
 		FROM member
-		WHERE mid=#{mid}
+		WHERE mid = #{mid}
 	</select>
-</mapper> 
+	
+	<update id="updateMemberMpoint">
+		UPDATE member SET mpoint = #{mpoint} WHERE mno = #{mno}
+	</update>
+	
+	<select id="getCartCnt" resultType="int" parameterType="int">
+		SELECT count(*)  
+		FROM cartdetail 
+		where isdeleted = 0 AND cartno = #{cartno} 
+	</select>
+</mapper>

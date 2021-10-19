@@ -1,0 +1,158 @@
+header {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.header-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    height: 84px;
+    position: relative;
+}
+
+/* 헤더 로고 */
+.header-left {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 15px;
+    z-index: 10;
+}
+.header-logo {
+    display: inline-block;
+    width: 190px;
+    height: 24px;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background: url(/images/top-header-handsome-logo.png) no-repeat;
+}
+
+/* 가운데 카테고리 메뉴 */
+.header-menu {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 84px;
+    padding-left: 250px;
+}
+
+.header-category {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.header-category > li {
+    float: left;
+    text-align: center;
+    width: 120px;
+    padding: 32px 10px;
+}
+
+.header-category > li a:hover {
+    text-decoration: underline;
+}
+
+.sub-category-wrap {
+    position: fixed;
+    top: 84px;
+    left: 0;
+    width: 100%;
+    min-height: 270px;
+    display: none;
+    border-top: 1px solid #e5e5e5;
+    z-index: 1;
+}
+.sub-category-wrap::after {
+    width: 100%;
+    height: 100%;
+    content: "";
+    background: #fff;
+    opacity: 0.4;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.wrap-on {
+    display: block;
+}
+.sub-category {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px;
+    font-size: 13px;
+}
+
+/* 2단계 메뉴 타이틀 */
+.sub-category > li {
+    float: left;
+    width: 140px;
+}
+.sub-category > li > a {
+    display: block;
+    margin-bottom: 20px;
+}
+
+/* 2단계 메뉴 컨텐트 */
+.sub-content > li {
+    margin: 5px 0;
+}
+.sub-content > li > a {
+    font-size: 12px;
+    color: #555;
+}
+
+
+/* 오른쪽 메뉴 */
+.header-right {
+    position: absolute;
+    top: 0;
+    right: 15px;
+}
+
+.header-option {
+    font-size: 13px;
+    font-weight: 600;
+}
+.header-option > li {
+    float: left;
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.header-option > li a {
+    display: block;
+    height: 24px;
+    line-height: 24px;
+}
+.header-option > li a:hover {
+    text-decoration: underline;
+}
+
+.my-page {
+    height: 54px;
+    overflow: hidden;
+}
+.sub-option {
+	padding-top: 2px;
+}
+
+/* 로그아웃 버튼 */
+.header-logout {
+	cursor: pointer;
+	display: block;
+    height: 24px;
+    line-height: 24px;
+	border: none;
+	background-color: white;
+	color: #000;
+	font-weight: 600;
+	font-size: 13px;
+}
+.header-logout:hover {
+	text-decoration: underline;
+}
+
+.cartcnt {
+	display: inline;
+}

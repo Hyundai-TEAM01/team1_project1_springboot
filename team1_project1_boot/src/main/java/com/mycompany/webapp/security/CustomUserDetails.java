@@ -1,23 +1,46 @@
 package com.mycompany.webapp.security;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 public class CustomUserDetails extends User{
-	private String useremail;
+	private static final long serialVersionUID = 1L;
+	private int mno;
+	private String mphone;
+	private String memail;
+	private int mpoint;
+	private String mname;
 
-	public CustomUserDetails(String username, String password,
-								Collection<? extends GrantedAuthority> authorities, String useremail) {
-		super(username, password, authorities);
-		this.useremail = useremail;
-		
+	public CustomUserDetails(String mid, String mpassword, boolean menabled, List<GrantedAuthority> mAuthorities, int mno,
+			String mphone, String memail, int mpoint, String mname) {
+		super(mid, mpassword, menabled, true, true, true, mAuthorities);
+		this.mno = mno;
+		this.mphone = mphone;
+		this.memail = memail;
+		this.mpoint = mpoint;
+		this.mname = mname;
 	}
 	
-	public String getUseremail() {
-		return useremail;
+	public int getMno() {
+		return mno;
+	}
+	
+	public int getMpoint() {
+		return mpoint;
 	}
 
+	public String getMemail() {
+		return memail;
+	}
+
+	public String getMphone() {
+		return mphone;
+	}
+	public String getMname() {
+		return mname;
+	}
 
 }

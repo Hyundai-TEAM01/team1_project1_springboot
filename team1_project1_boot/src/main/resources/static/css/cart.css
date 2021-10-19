@@ -1,0 +1,214 @@
+@charset "UTF-8";
+
+.small {
+	font-size: small;
+}
+
+.grey {
+	color: grey;
+}
+
+.yellow {
+	color: orange;
+}
+
+input.amount {
+	width: 40px;
+}
+
+.item-key {
+	display: inline-block;
+	text-align: left;
+	width: 100px;
+}
+
+.span-wrap {
+	display: inline-block;
+	margin-left: 20px;
+	width: 120px;
+	word-wrap: break-word;
+}
+
+.amount-icon i {
+	margin: 0px;
+	color: #727272;
+}
+
+.init-price {
+	display: none;
+}
+
+.change-btn {
+	color: darkgray;
+	font-size: 12px;
+	text-decoration: underline;
+}
+
+.update {
+	background-color: white;
+	color: #363636;
+	font-weight: bold;
+	font-size: 12px;
+	min-height: 1em;
+	display: inline-block;
+	font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+	width: 50px;
+	height: 25px;
+	border: 1px solid #ccc;
+}
+
+.cancel {
+	background-color: white;
+	color: #363636;
+	font-weight: bold;
+	font-size: 12px;
+	min-height: 1em;
+	display: inline-block;
+	font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+	width: 50px;
+	height: 25px;
+	border: 1px solid #ccc;
+}
+
+a.change-btn:hover {
+	color: darkgray;
+}
+
+.option-change {
+	background-color: lightgray;
+	display: inline-block;
+	width: 100%;
+	height: 30px;
+	vertical-align: middle !important;
+}
+
+.option-change select {
+	width: 100px;
+	height: 25px;
+	align-items: center;
+	text-align-last: center;
+	border: none;
+	background-color: whitesmoke;
+}
+
+form {
+	margin: auto 0 auto 0;
+}
+
+.op-add {
+	background-color: #f8f8f8;
+}
+
+.modal-wrap {
+	visibility: hidden;
+	position: fixed;
+	z-index: 30;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-wrap.on {
+	visibility: visible;
+}
+
+.modal {
+	width: 340px;
+	min-height: 190px;
+	padding: 30px;
+	background: white;
+	padding: 1.5rem;
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.125);
+}
+
+.close-row {
+	text-align: right;
+}
+
+.close-row i {
+	color: #444;
+}
+
+.modal-content {
+	text-align: center;
+	padding: 18px 0;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.modal-content p {
+	margin-bottom: 4px;
+}
+
+.modal-btns {
+	text-align: center;
+}
+
+.modal-btns a {
+	display: inline-block;
+	padding: 4px 8px;
+	border: 1px solid #ccc;
+	font-size: 12px;
+	margin: 0 4px;
+}
+
+.btn-continue {
+	color: #363636;
+}
+
+.btn-tocart {
+	background: #4a4a4a;
+	color: #fff;
+}
+
+.btn:hover {
+	cursor: pointer;
+	border: rgba(0, 0, 0, .8) 1px solid;
+}
+
+.op-add div {
+	vertical-align: middle;
+}
+
+.op-add a {
+	display: inline-block;
+	width: 15px;
+	height: 16px;
+	position: relative;
+}
+
+.op-add a.now-choose::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 0.9px;
+	left: 0;
+	bottom: -3px;
+	background: #333;
+}
+
+.color-url {
+	width: 100%;
+}
+
+.option-span {
+	display: inline-block;
+	width: 45px;
+	font-size: 11px;
+	color: #222;
+}
+
+.mb-3 {
+	margin-bottom: 3px;
+}
+
+.error-red {
+	margin-left : 5px;
+	color: red;
+	font-size : 12px;
+}

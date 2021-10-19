@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>	
+         <!-- fomantic UI -->
+         <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+		 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>        
+		 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+		 <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+		 
+		 <link rel="stylesheet" th:href="@{/css/loginForm.css}"/>
+	</head>
+	<body>
+		
+		<div class="ui middle aligned center aligned grid">
+			<div class="column">
+				<a th:href="@{/}"><img th:src="@{/images/top-header-handsome-logo.png}" class="image"></a>
+		
+				<form class="ui large form" method="post" th:action="@{/login}">
+					<!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> -->
+					<div class="ui segment transparent">
+						<div class="field">
+							<div class="ui left input transparent gray-background">
+								<input class="text" type="text" name="mid" placeholder="아이디" autocomplete="off">
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui left input transparent gray-background">
+								<input class="text" type="password" name="mpassword" placeholder="비밀번호">
+							</div>
+						</div>
+						
+						<div th:if="${loginError}" class="ui visible transparent red-text" role="alert">
+							아이디 또는 비밀번호가 틀립니다.
+						</div>
+						
+						<!-- <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
+							<div class="ui visible transparent red-text" role="alert">
+								<c:if test="${SPRING_SECURITY_LAST_EXCEPTION.message == 'Bad credentials'}">
+									아이디 또는 비밀번호가 틀립니다.
+								</c:if>
+								<c:if test="${fn:contains(SPRING_SECURITY_LAST_EXCEPTION.message, 'principal exceeded')}">
+									인증 횟수가 초과되었습니다.
+								</c:if>
+							</div>
+						</c:if> -->
+						
+						<button type="submit" class="ui fluid button">로그인</button>
+						<div class="ui fluid button">
+							<a class="white-text" href="#">회원 가입</a>
+						</div>
+					</div>
+				</form>
+				
+			</div>
+		</div>
+	</body>
+
+</html>

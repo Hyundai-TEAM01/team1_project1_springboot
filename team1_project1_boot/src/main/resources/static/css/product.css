@@ -1,0 +1,110 @@
+@charset "UTF-8";
+.product-container {
+    max-width: 1205px;
+    min-width: 1100px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+.product-img-view {
+	overflow-y: scroll;
+	height: 1000px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.product-img-view::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+.product-info-view{
+	height: calc(100% - 20px);
+}
+.product-img {
+    max-width: 100%;
+}
+span.title {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: bold;
+}
+.color li {
+    display: inline;
+    margin: 0 10px 5px 0;
+    vertical-align: middle;
+}
+.color-text {
+	font-size: 15px;
+}
+.info-sect {
+    margin-left: 20px;
+}
+.ui.button {
+    width: 120px;
+    border-radius: 0px;
+    background: #4a4a4a;
+    color: white;
+    margin-top: 12px;
+}
+.product-brand {
+    font-size: 20px;
+    font-weight: bolder;
+    margin-bottom: 30px;
+}
+.product-name {
+    display: inline-block;
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+.product-price {
+    font-size: 20px;
+}
+.total-price {
+    font-size: 20px;
+    font-weight: 500;
+}
+.li-size {
+    margin-bottom: 20px; 
+}
+.beige {
+	width: 24px;
+	height: 24px;
+}
+.ui input.amount {
+	width: 40px;
+	text-align: center;
+}
+.amount-icon i {
+	margin: 0px;
+	color: #727272;
+}
+a.color-item {
+	position: relative;
+}
+
+a.color-item:hover::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 2px;
+	left: 0;
+	bottom: -3px;
+	background: #333;
+}
+.now-choose::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 2px;
+	left: 0;
+	bottom: -3px;
+	background: #333;
+}
+.info-sect .product-content-box{margin-top:15px; margin-bottom: 20px;}
+.info-sect .product-content-box .number-code{font-size:12px; display:block; margin-bottom:17px;}
+.info-sect .product-content-box .number-code span{font-weight:normal;}
+.info-sect .product-content-box .round-style{background-color:#f5f5f5; border-radius:20px; padding:22px 38px;}
+.info-sect .product-content-box .round-style p{position:relative; font-size:14px; color:#676767; line-height:1.6;}
+.info-sect .product-content-box .round-style p:before, .info-sect .product-content-box .round-style p:after{content:""; position:absolute; background-position: 0 0; background-repeat: no-repeat;width:10px; height:10px;}
+.info-sect .product-content-box .round-style p:before{top:0px; left:-20px; background-image: url(http://cdn.thehandsome.com/_ui/desktop/common/images/detail/detail-pg-comma-start.png);}
+.info-sect .product-content-box .round-style p:after{bottom:8px; right:-20px; background-image: url(http://cdn.thehandsome.com/_ui/desktop/common/images/detail/detail-pg-comma-end.png);}
+.info-sect .product-content-box .size-text{margin-top:13px; font-size:13px; color:#676767;}

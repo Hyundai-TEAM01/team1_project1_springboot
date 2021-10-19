@@ -28,6 +28,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Resource
 	private CustomUserDetailsService customUserDetailsService;
 	
+	@Resource
+	AuthenticationSuccessHandler authenticationSuccessHandler;
+	
+	@Resource
+	AuthenticationFailureHandler authenticationFailureHandler;
+	
+	@Resource
+	LogoutSuccessHandler logoutSuccessHandler;
+	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -35,23 +44,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// 로그인 방식 설정
 		http.formLogin()
-			.loginPage("/security/loginForm") // 로그인 페이지 지정, default '/login' (get)
+			.loginPage("/member/loginForm") // 로그인 페이지 지정, default '/login' (get)
 			.usernameParameter("mid") // default 'username'
 			.passwordParameter("mpassword") // default 'password'
-			.defaultSuccessUrl("/security/content") // 로그인 시 해당 경로로  redirect
-			.failureUrl("/security/loginError") // 로그인 실패 시 해당 경로로 이동, default '/login?error'
+			.successHandler(authenticationSuccessHandler) // 로그인 시 해당 경로로  redirect
+			.failureHandler(authenticationFailureHandler) // 로그인 실패 시 해당 경로로 이동, default '/login?error'
 			.loginProcessingUrl("/login"); // default '/login' (post)
 		
 		// 로그아웃 설정
 		http.logout()
 			.logoutUrl("/logout") // default '/logout'
-			.logoutSuccessUrl("/security/content"); // 로그아웃 성공 시 이동 페이지
+			.logoutSuccessHandler(logoutSuccessHandler); // 로그아웃 성공 시 이동 페이지
 		
 		// URL 권한 설정
 		http.authorizeRequests()
-			.antMatchers("/security/admin/**").hasAuthority("ROLE_ADMIN")
-			.antMatchers("/security/manager/**").hasAuthority("ROLE_MANAGER")
-			.antMatchers("/security/user/**").authenticated() // 로그인만 되어있을 경우 접근 가능
+			.antMatchers("/cart**").authenticated()
+			.antMatchers("/cart/**").authenticated()
+			.antMatchers("/mypage/**").authenticated() // 로그인만 되어있을 경우 접근 가능
 			.antMatchers("/**").permitAll();
 		
 		// 해당 페이지에 대해 권한 없음(403)일 경우 처리
@@ -86,11 +95,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		handler.setRoleHierarchy(roleHierarchyImpl()); // RoleHierarchy 객체는 spring security 전체에서 사용하므로 관리 객체로 생성!
 		web.expressionHandler(handler);
 		web.ignoring() // 인증 절차 필요없는 url 설정
-			.antMatchers("/images/**")
 			.antMatchers("/css/**")
-			.antMatchers("/jquery/**")
-			.antMatchers("/bootstrap-4.6.0-dist/**")
-			.antMatchers("/favicon.ico");
+			.antMatchers("/images/**")
+			.antMatchers("/js/**");
 	}
 
 	// method 실행 후 반환되는 객체를 spring boot 관리 객체에 등록

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycompany.webapp.dao.CartDAO">
+	<select id="getCartDetailList" resultType="cartDetail" parameterType="int">
+		SELECT cartdetailno, cartno, pcode, psize, pcolor, amount, regdate, isdeleted FROM CARTDETAIL WHERE CARTNO = #{cartNo}
+	</select>
+	
+	<select id="getCartProductList" resultType="cartProductInfo" parameterType="int">
+		SELECT cartdetailno, cartno, cd.pcode, psize, cd.pcolor, amount, regdate, isdeleted, imgurl1 as imgurl , pbrand, pname, pprice 
+		FROM CARTDETAIL cd, PRODUCTIMG img, PRODUCT p
+		WHERE CARTNO = #{cartNo} and cd.PCODE = img.pcode and img.pcolor = cd.pcolor and p.pcode = cd.pcode and isdeleted = 0 Order by cartdetailno
+	</select>
+	
+	<update id="removeCartDetail" parameterType="int">
+		UPDATE cartdetail SET isdeleted = 1 WHERE cartdetailno = #{cartdetailno}
+	</update>
+	
+	<update id="removeCartDetailList">
+		UPDATE cartdetail SET isdeleted = 1 
+		WHERE cartdetailno IN 
+			<foreach collection="array" item="item" separator="," open="(" close=")">
+				${item}
+			</foreach>
+	</update>
+	
+	<insert id="insertCartDetail">
+		INSERT INTO cartdetail values (SEQ_CARTDETAILNO.NEXTVAL,#{cartno}, #{pcode},#{psize},#{pcolor},#{pamount},SYSDATE,0)
+	</insert>
+	
+	<select id="selectByCartDetailNo" parameterType="int" resultType="cartDetail">
+		SELECT cartdetailno, cartno, pcode, psize, pcolor, amount, regdate, isdeleted FROM CARTDETAIL WHERE cartdetailno = #{cartdetailno}
+	</select>
+	
+	
+	<select id="getCartProductListByArray" parameterType="int" resultType="cartProductInfo">
+		SELECT cartdetailno, cartno, cd.pcode, psize, cd.pcolor, amount, regdate, isdeleted, imgurl1 as imgurl , pbrand, pname, pprice 
+		FROM CARTDETAIL cd, PRODUCTIMG img, PRODUCT p
+		WHERE cd.PCODE = img.pcode and img.pcolor = cd.pcolor and p.pcode = cd.pcode and isdeleted = 0 AND cartdetailno IN 
+			<foreach collection="param1" item="item" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+			<if test="param2 > 0" >
+				AND cartno = #{param2}
+			</if>
+	</select>
+	
+	<select id="getCartNoByMno" resultType="int">
+		SELECT cartno FROM cart WHERE member_mno = #{mno}
+	</select>
+	
+	<select id="getCartDetailByCartdetailno" resultType="cartDetail">
+		SELECT * FROM cartdetail WHERE cartdetailno = #{param1} AND cartno = #{param2}
+	</select>
+	
+	<update id="updateCartdetail" parameterType="cartDetail">
+		UPDATE cartdetail SET amount = #{amount} WHERE cartdetailno = #{cartDetailNo}
+	</update>
+	
+	<update id="updateCartdetailOption" parameterType="cartDetail">
+		UPDATE cartdetail SET amount = #{amount}, psize = #{psize}, pcolor = #{pcolor} WHERE cartdetailno = #{cartDetailNo}
+	</update>
+	
+	<update id="purchaseCartDetail" parameterType="int">
+		UPDATE cartdetail SET isdeleted = 2 WHERE cartdetailno = #{cartdetailno}
+	</update>
+	
+	<update id="purchaseCartDetailList">
+		UPDATE cartdetail SET isdeleted = 2 
+		WHERE cartdetailno IN 
+			<foreach collection="array" item="item" separator="," open="(" close=")">
+				${item}
+			</foreach>
+	</update>
+	
+	<select id="getCartProductDetailByPcode" resultType="cartProductDetail">
+		SELECT s.pcode, s.pcolor, s.psize, s.pamount, i.colorurl 
+		FROM productstock s, productimg i 
+		WHERE s.pcode = #{pcode} AND s.pcode = i.pcode AND s.pcolor = i.pcolor
+	</select>
+	
+	<select id="getCartDetailByOption" resultType="cartDetail">
+		SELECT * FROM cartdetail 
+		WHERE pcode = (SELECT pcode FROM cartdetail WHERE cartdetailno = #{param1}) 
+				AND pcolor = #{param2} AND psize = #{param3}
+	</select>
+	
+	<select id="getCartProductCount" resultType="int">
+		SELECT count(pcode)
+		FROM (SELECT * FROM cartdetail where cartno = #{cartno})
+		WHERE pcode = #{pcode} AND psize = #{psize} AND pcolor = #{pcolor} AND isdeleted = 0
+	</select>
+	
+</mapper>

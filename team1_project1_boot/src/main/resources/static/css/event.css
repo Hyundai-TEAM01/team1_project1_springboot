@@ -1,0 +1,70 @@
+.pg-title {
+    margin: 0 0 25px;
+    height: 84px;
+    line-height: 84px;
+    border-bottom: 1px solid #e3e3e3;
+    text-align: center;
+    font-weight: normal;
+}
+
+.pt-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.couproceed {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+/* 이벤트 쿠폰 버튼 */
+.couoption {
+    position: relative;
+    max-width: 662px;
+    max-height: 492px;
+    margin: 0 auto;
+    text-align: center;
+}
+.coutimer {
+    position: absolute;
+    font-size: 24px;
+    color: #e74c3c;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+.explain {
+    margin-bottom: 10px;
+}
+.dday {
+    font-weight: 600;
+}
+.coucontent {
+    position: absolute;
+    font-size: 22px;
+    color: #333;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+.imgbtn {
+    z-index: 0;
+}
+.imgbtn:hover {
+    opacity: 0.8;
+}
+
+
+.pt-subtitle {
+    font-size: 20px;
+    color: #333;
+}
+
+.couended {
+    text-align: left;
+    padding: 30px;
+}

@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.mycompany.webapp.dto.Member" alias="member"/>
-		<typeAlias type="com.mycompany.webapp.dto.Board" alias="board"/>
+		<typeAlias type="com.mycompany.webapp.dto.CartDetail" alias="cartDetail"/>
+		<typeAlias type="com.mycompany.webapp.dto.CartProductInfo" alias="cartProductInfo"/>
+		<typeAlias type="com.mycompany.webapp.dto.CartProductDetail" alias="cartProductDetail"/>
+		<typeAlias type="com.mycompany.webapp.dto.CouponList" alias="couponList"/>
+		<typeAlias type="com.mycompany.webapp.dto.OrderList" alias="orderList"/>
+		<typeAlias type="com.mycompany.webapp.dto.OrderItem" alias="orderItem"/>
+		<typeAlias type="com.mycompany.webapp.dto.OrderDetail" alias="orderDetail"/>
+		<typeAlias type="com.mycompany.webapp.dto.ProductList" alias="productList"/>
+		<typeAlias type="com.mycompany.webapp.dto.ProductImg" alias="productImg"/>
+		<typeAlias type="com.mycompany.webapp.dto.ProductDetail" alias="productDetail"/>
+		<typeAlias type="com.mycompany.webapp.dto.ProductAmount" alias="productAmount"/>
+		<typeAlias type="com.mycompany.webapp.dto.ProductAmountList" alias="productAmountList"/>
+		<typeAlias type="com.mycompany.webapp.dto.ProductOrder" alias="productOrder"/>
+		<typeAlias type="com.mycompany.webapp.dto.ProductOrderDetail" alias="productOrderDetail"/>
 		<typeAlias type="com.mycompany.webapp.dto.Pager" alias="pager"/>
-	</typeAliases>
+		<typeAlias type="com.mycompany.webapp.dto.Member" alias="member"/>
+	</typeAliases>	
 </configuration>

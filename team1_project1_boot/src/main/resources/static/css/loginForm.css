@@ -1,0 +1,38 @@
+@charset "UTF-8";
+body>.grid {
+	height: 100%;
+}
+.image {
+	margin-top: -100px;
+	margin-bottom: 10px;
+}
+.column {
+	max-width: 450px;
+}
+.ui.segment {
+	box-shadow : none;
+	border : 0px;
+}
+.ui.button {
+	border-radius : 0px;
+	background : #4a4a4a;
+	color : white;
+	margin-top : 12px; 
+}
+.gray-background {
+	background : #c4c4c4;
+	padding : 10px;
+}
+.red-text {
+	color : red;
+}
+.white-text {
+	color : white;
+}
+         div.ui.left.input.transparent.gray-background>input {
+             color : white;
+             background-color: #c4c4c4;
+         }
+         div.ui.left.input.transparent.gray-background>input::placeholder{
+             color: white;
+         }

@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.mycompany.webapp.dao.MemberDao;
+import com.mycompany.webapp.dao.MemberDAO;
 import com.mycompany.webapp.dto.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 	@Resource
-	private MemberDao memberDao;
+	private MemberDAO memberDao;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Member member = memberDao.selectByMid(username);
+		Member member = memberDao.getLoginMember(username);
 		
 		if(member == null) {
 			throw new UsernameNotFoundException(username);
@@ -35,8 +35,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		List<GrantedAuthority> authorites = new ArrayList<>();
 		authorites.add(new SimpleGrantedAuthority(member.getMrole()));
 		
-		CustomUserDetails userDetails = new CustomUserDetails(member.getMid(), member.getMpassword(),
-				authorites, member.getMemail());
+		CustomUserDetails userDetails = new CustomUserDetails(member.getMid(), member.getMpassword(),member.isMenable(),
+				authorites, member.getMno(), member.getMphone(),member.getMemail(), member.getMpoint(), member.getMname());
 		
 		return userDetails;
 	}

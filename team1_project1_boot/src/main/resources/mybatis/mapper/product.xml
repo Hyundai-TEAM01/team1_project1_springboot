@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.ProductDAO">
+	
+	<resultMap id="productListResultMap" type="productList">
+		<result property="pno" column="RNUM"/>
+		<result property="ccode" column="CCODE"/>
+		<result property="pcode" column="PCODE"/>
+		<result property="pname" column="PNAME"/>
+		<result property="pbrand" column="PBRAND"/>
+		<result property="pprice" column="PPRICE"/>
+		<result property="pdate" column="PDATE"/>
+		<result property="enabled" column="ENABLED"/>
+		<collection property="color" column="PCODE" javaType="java.util.ArrayList" ofType="productImg" select="selectByProductImg"/>
+	</resultMap>
+	<!-- 카테고리별 상품 목록 조회 -->
+	<select id="selectByCategoryPage" resultMap="productListResultMap">
+		SELECT rnum, ccode, pcode, pname, pbrand, pprice, pdate, enabled
+		FROM(
+			SELECT rownum AS rnum, ccode, pcode, pname, pbrand, pprice, pdate, enabled
+			FROM (
+				SELECT pca.ccode AS ccode,
+				pca.pcode AS pcode,
+				prod.pname AS pname, 
+				prod.pbrand AS pbrand, 
+				prod.pprice AS pprice, 
+				prod.pdate AS pdate, 
+				prod.enabled AS enabled
+				FROM pcategory pca 
+				JOIN product prod ON pca.pcode = prod.pcode
+				WHERE ccode LIKE #{ccode}||'%'
+				ORDER BY enabled, pdate DESC, pcode
+			)
+			WHERE rownum &lt;= #{pager.endRowNo}
+		)
+		WHERE rnum &gt;= #{pager.startRowNo}
+	</select>
+	<!-- 상품별 컬러별 이미지 조회 -->
+	<select id="selectByProductImg" resultType="productImg">
+		SELECT prod.pcode, prodimg.pcolor AS pcolor, prodimg.imgurl1 AS imgurl1, prodimg.imgurl2 AS imgurl2, prodimg.imgurl3 AS imgurl3, prodimg.colorurl AS colorurl
+		FROM product prod
+		JOIN productimg prodimg
+		ON prod.pcode = prodimg.pcode
+		WHERE prod.pcode = #{pcode}
+	</select>
+	
+	<select id="productListCount" resultType="int">
+		SELECT COUNT(*) FROM PCATEGORY WHERE CCODE LIKE #{ccode}||'%'
+	</select>
+	
+	<resultMap id="productResultMap" type="productDetail">
+		<result property="pcode" column="PCODE"/>
+		<result property="pname" column="PNAME"/>
+		<result property="pcontent" column="PCONTENT"/>
+		<result property="pbrand" column="PBRAND"/>
+		<result property="pprice" column="PPRICE"/>
+		<result property="pdate" column="PDATE"/>
+		<result property="enabled" column="ENABLED"/>
+		<collection property="color" column="PCODE" javaType="java.util.ArrayList" ofType="productImg" select="selectByProductImg"/>
+	</resultMap>
+	<!-- 상품 상세 조회 -->
+	<select id="getProductDetail" resultMap="productResultMap">
+		SELECT pcode, pname, pcontent, pbrand, pprice, pdate, enabled FROM product WHERE pcode = #{pcode}
+	</select>
+	
+	
+	<resultMap id="productAmountListResultMap" type="productAmountList">
+		<result property="pcode" column="PCODE"/>
+		<result property="pcolor" column="PCOLOR"/>
+		<collection property="amount" ofType="productAmount">
+			<id property="psize" column="PSIZE"/>
+			<result property="pamount" column="PAMOUNT"/>
+		</collection>
+	</resultMap> 
+	<!-- 상품 코드, 컬러의 모든 사이즈의 수량 조회 -->
+	<select id="getProductDetailAmountList" resultMap="productAmountListResultMap">
+		SELECT pcode, pcolor, psize, pamount
+		FROM productstock
+		WHERE pcode = #{pcode} AND pcolor = #{pcolor}
+		ORDER BY psize
+	</select>
+	
+	
+	<!-- 상품 컬러, 사이즈 수량 조회 -->
+	<select id="getProductAmount" resultType="int">
+		SELECT pamount FROM productstock WHERE pcode = #{pcode} AND psize = #{psize} AND pcolor = #{pcolor}
+	</select>
+	
+	<update id="updateProductStock">
+		UPDATE productstock SET pamount = #{amount} WHERE  pcode = #{pcode} AND psize = #{psize} AND pcolor = #{pcolor}
+	</update>
+	
+	<select id="getProductAmountList" resultType="string">
+		SELECT pamount
+		FROM productstock s, (SELECT pcode, pcolor, psize FROM cartdetail WHERE cartdetailno IN 
+			<foreach collection="array" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+			) temp
+		<![CDATA[
+		WHERE s.pcode = temp.pcode AND s.pcolor = temp.pcolor AND s.psize = temp.psize GROUP BY pamount HAVING pamount <= 0
+		]]>
+	</select>
+	
+	<update id="productEnabledUpdate">
+		UPDATE product set enabled = 1 
+		WHERE pcode in (select p.pcode 
+						from (select pcode, fn_check_amount(pcode) amount 
+								from product where pcode = #{pcode}) fnt , product p 
+					<![CDATA[
+						where p.pcode = fnt.pcode and amount < 1)]]>
+	</update>
+</mapper>

@@ -1,0 +1,167 @@
+.pg-title {
+    margin: 0 0 25px;
+    height: 84px;
+    line-height: 84px;
+    border-bottom: 1px solid #e3e3e3;
+    text-align: center;
+    font-weight: normal;
+}
+
+.cp-wrap::after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
+.cp-subtitle {
+    float: left;
+    font-size: 16px;
+    color: #333;
+}
+
+select.ui.dropdown {
+    float: right;
+    height: 23px;
+    width: 100px;
+    font-size: 12px;
+    padding: 0.1em;
+}
+
+/* 쿠폰리스트 테이블 */
+.cp-table {
+    width: 100%;
+    border-top: 1px solid #414040;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: center;
+    font-size: 12px;
+}
+
+th {
+    padding: 15px 10px;
+    background-color: #f5f5f5;
+}
+
+th:nth-child(1) {
+    width: 10%;
+}
+th:nth-child(2) {
+    width: auto;
+}
+th:nth-child(3) {
+    width: 10%;
+}
+th:nth-child(4) {
+    width: 20%;
+}
+
+td {
+    padding: 15px;
+    color: #222;
+    border-left: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.coupon-num {
+    border-left: 0;
+}
+
+.cp-list {
+    position: relative;
+    padding-left: 120px;
+    min-height: 100px;
+    overflow: hidden;
+}
+
+.cp-list img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 98px;
+    height: 98px;
+}
+
+.cp-info {
+    text-align: left;
+    word-break: break-all;
+    width: 100%;
+}
+.cp-name {
+	display: block;
+    margin-top: 5px;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.cp-content {
+    margin-top: 4px;
+    font-size: 11px;
+    color: #999;
+}
+
+.expire > p {
+    margin: 0;
+}
+.cp-date {
+    color: rgb(128, 116, 116);
+    font-size: 11px;
+}
+.and-line {
+    display: inline-block;
+    padding: 0 5px;
+    font-size: 11px;
+    color: #999;
+}
+.cp-used {
+    margin: 3px 0 5px;
+    display: block;
+    font-size: 11px;
+    color: #ba9765;
+    text-decoration: underline;
+}
+.cp-notused {
+    margin: 3px 0 5px;
+    display: block;
+    font-size: 11px;
+    color: #333;
+}
+.cp-date-used {
+    font-weight: 600;
+}
+
+.no-data {
+	padding: 50px;
+	color: #c69c6c;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 22px;
+	border-left: none;
+}
+
+/* 페이징 버튼 */
+.paging {
+    margin-top: 40px;
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+}
+
+.paging > a {
+    display: inline-block;
+    width: 15px;
+    margin: 0 5px;
+    height: 13px;
+    cursor: pointer;
+}
+
+.paging-num {
+    margin-top: -4px;
+    display: inline-block;
+}
+.paging-num a {
+    padding: 0 2px;
+}
+
+.paging-num a.on {
+    font-weight: bold;
+}

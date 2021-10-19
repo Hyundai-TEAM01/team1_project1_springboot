@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycompany.webapp.dao.CouponDAO">
+	<!-- 쿠폰 목록 페이지 불러오기 -->
+	<!-- 쿠폰 목록 가져오기(유저번호 + 페이징 + 검색쿼리[미사용, 사용, 기간만료]) -->
+	<select id="getCouponListByPage" resultType="couponList">
+		SELECT rnum, couno, couname, coucontent,
+			   cousaletype, coubenefit, couperiod, couimgurl, 
+			   coupricelimit, regdate, usedate, used
+		FROM (
+		SELECT ROWNUM AS rnum, couno, couname, coucontent,
+			   cousaletype, coubenefit, couperiod, couimgurl, 
+			   coupricelimit, regdate, usedate, used
+			FROM (
+				SELECT cp.couno, cp.couname, cp.coucontent, cp.cousaletype,
+		        cp.coubenefit, cp.couperiod, cp.couimgurl, cp.coupricelimit, 
+		        mcp.regdate, mcp.usedate, mcp.used
+				FROM coupon cp, membercoupon mcp
+				WHERE mcp.member_mno = #{mno}
+				AND mcp.couno = cp.couno
+				AND mcp.used = #{query.searchType}
+				ORDER BY mcp.regdate DESC
+			)
+		WHERE ROWNUM &lt;= #{pager.endRowNo}  <!-- endRowNo -->
+		)
+		WHERE rnum &gt;= #{pager.startRowNo} <!-- startRowNo -->
+	</select>
+	
+	<!-- 쿠폰 목록 갯수 가져오기(유저번호 + 페이징 + 검색쿼리[미사용, 사용, 기간만료]) -->
+	<select id="getCouponListCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM coupon cp, membercoupon mcp
+       	WHERE mcp.member_mno = #{mno}
+		AND mcp.couno = cp.couno
+		AND mcp.used = #{query.searchType}
+	</select>
+	
+
+	<!-- 이벤트 쿠폰 발급 갯수 -->
+	<select id="getCouponEventAmount" resultType="int">
+		SELECT COUNT(*) FROM membercoupon WHERE couno = #{couno} 
+	</select>
+	
+	<!-- 이벤트 쿠폰 있는 지 확인하기 -->
+	<select id="hasCouponEvent" resultType="int">
+		SELECT COUNT(*) FROM membercoupon 
+		WHERE couno = #{couno} AND member_mno = #{mno}
+	</select>
+
+	<!-- 이벤트 쿠폰 발급하기 -->
+	<insert id="insertCouponEvent">
+		INSERT INTO membercoupon VALUES(SEQ_MCNO.nextval, #{couno}, sysdate, null, 0, #{mno})
+	</insert>
+	
+	
+</mapper>

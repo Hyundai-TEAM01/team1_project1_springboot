@@ -1,0 +1,57 @@
+.fullscreen {
+    visibility: hidden;
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fullscreen.on {
+    visibility: visible;
+}
+.modal {
+    width: 340px;
+    min-height: 190px;
+    padding: 30px;
+    background: white;
+    padding: 1.5rem;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.125);
+}
+
+.close-row {
+    text-align: right;
+}
+.close-row i {
+    color: #444;
+}
+.modal-content {
+    text-align: center;
+    padding: 18px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+.modal-content p {
+    margin-bottom: 4px;
+}
+.modal-btns {
+    text-align: center;
+}
+.modal-btns a {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    font-size: 12px;
+    margin: 0 4px;
+}
+.btn-continue {
+    color: #363636;
+}
+.btn-tocart {
+    background: #4a4a4a;
+    color: #fff;
+}

@@ -1,0 +1,124 @@
+@charset "UTF-8";
+.home-container {
+    max-width: 1205px;
+    margin: 50px auto 0;
+}
+a span{
+    display: block;
+}
+.filterWrap {
+    font-size: 20px;
+    margin: 10px 0px 10px 0px;
+    font-weight: bolder;
+}
+.brand {
+    font-size: 13px;
+    font-weight: bolder;
+    margin-top: 15px;
+}
+.title {
+    margin-top: 5px;
+}
+.price {
+    margin-top: 5px;
+}
+.flag {
+    display: block;
+    min-height: 20px;
+}
+.flag>.product-new {
+	display: inline-block;
+    margin-top: 5px;
+    color: #c69c6d;
+}
+.flag>.product-soldout {
+	display: inline-block;
+	margin-top: 5px;
+	margin-left: 10px;
+    color: red;
+}
+.color-more-wrap {
+    margin-top: 10px;
+}
+.img-color-more {
+    width: 15px;
+    height: 16px;
+    margin: 2px;
+    border: solid 1px dcdcdc;
+}
+.itemlist {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    row-gap: 10px;
+    column-gap: 10px;
+    /* grid-template-columns: repeat(auto-fill, minmax(25%, auto)); */
+}
+.paging {
+    margin-top: 40px;
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+}
+
+.paging > a {
+    display: inline-block;
+    width: 15px;
+    margin: 0 5px;
+    height: 13px;
+    cursor: pointer;
+}
+
+.paging-num {
+    margin-top: -4px;
+    display: inline-block;
+}
+.paging-num a {
+    padding: 0 2px;
+}
+
+.paging-num a.on {
+    font-weight: bold;
+}
+.itemlist li {
+    text-align: center;
+}
+.main-img {
+	width: 294px;
+	height: 444px;
+}
+.mg-product {
+	margin-bottom: 30px;
+}
+
+a.now-choose {
+	position: relative;
+}
+
+a.now-choose:hover::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 2px;
+	left: 0;
+	bottom: -2px;
+	background: #333;
+}
+
+@media screen and (max-width: 1210px) { 
+    .itemlist {
+        grid-template-columns: 1fr 1fr 1fr;
+    /* grid-template-columns: repeat(auto-fill, minmax(25%, auto)); */
+    }
+}
+
+@media screen and (max-width: 914px) { 
+    .itemlist {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 600px) { 
+    .itemlist {
+        grid-template-columns: 1fr;
+    }
+}

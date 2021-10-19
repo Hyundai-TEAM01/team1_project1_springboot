@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<th:block th:fragment="setContent(content)">
+      <head>
+         <meta charset="UTF-8"/>
+         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+         
+         <!-- fomantic UI -->
+         <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+		 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>        
+		 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+		 <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+		 
+		 <!-- custom CSS -->
+        <link rel="stylesheet" th:href="@{/css/default.css}">
+        <link rel="stylesheet" th:href="@{/css/header2.css}" />
+      	<script th:src="@{/js/header.js}"></script>
+
+      </head>
+ 
+      <body>
+	     <header>
+	            <div class="header-container">
+	                <div class="header-center">
+	                    <a
+	                    	th:href="@{/}"
+	                        class="header-logo"
+	                        >thehandsome.com
+	                    </a>
+	                </div>
+	
+	                <div class="header-right">
+	                    <ul class="header-option">
+	                        <li>
+								<div sec:authorize="!isAuthenticated()">
+		                    		<a th:href="@{/member/loginForm}">로그인</a>
+			                    </div>
+			            
+			                    <div sec:authorize="isAuthenticated()">
+			                        <!-- 사이트간 요청 위조 방지가 비활성화되어 있을 경우 -->  
+			                        <a th:href="@{/logout}" 
+			                           class="header-logout">로그아웃</a> 
+								</div>
+							</li>
+	                        <li class="my-page">
+	                            <a th:href="@{/mypage/orderlist}">마이페이지</a>
+	                            <ul class="sub-option">
+	                                <li><a th:href="@{/mypage/orderlist}">주문조회</a></li>
+	                                <li><a th:href="@{/mypage/couponlist}">쿠폰조회</a></li>
+	                            </ul>
+	                        </li>
+	                        <li><a th:href="@{/cart/content}"><i class="shopping bag icon"></i>(<span class="cartcnt">0</span>)</a></li>
+	                    </ul>
+	                </div>
+	            </div>
+	        </header>
+      
+   	  <!-- ############################################# -->      
+      <th:block th:replace="${content}">
+
+      </th:block>
+	  <!-- ############################################# -->      
+        
+       <link rel="stylesheet" th:href="@{/css/footer.css}"/>
+        <footer>
+	        <div class="ui divider"></div>
+	        <div class="footer-container">
+	            <div class="ui grid">
+	                <div class="ten wide column">
+	                    <div class="footer-left">
+	                        <div class="footer-logo">
+	                            <a href="">
+	                                <img th:src="@{/images/footer/footer-handsome-logo.png}" alt="">
+	                            </a>
+	                        </div>
+	
+	                        <div class="ui gird footer-link">
+	                            <ul class="four wide column">
+	                                <li><a href="">온라인 멤버십</a></li>
+	                                <li><a href="">한섬 VVIP 혜택</a></li>
+	                                <li><a href="">한섬마일리지 혜택</a></li>
+	                            </ul>
+	                            <ul class="four wide column">
+	                                <li><a href="">고객센터</a></li>
+	                                <li><a href="">FAQ</a></li>
+	                                <li><a href="">수선진행조회</a></li>
+	                            </ul>
+	                            <ul class="four wide column">
+	                                <li><a href="">주문배송조회</a></li>
+	                                <li><a href="">취소/반품</a></li>
+	                            </ul>
+	                            <ul class="four wide column">
+	                                <li><a href="">회사소개</a></li>
+	                                <li><a href="">브랜드소개</a></li>
+	                                <li><a href="">투자정보</a></li>
+	                            </ul>
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <div class="six wide column">
+	                    <div class="footer-link">
+	                        <ul class="link-right">
+	                            <li><a href=""><img th:src="@{/images/footer/ico_footer_location.png}" alt="">매장안내</a>
+	                            </li>
+	                            <li><a href=""><img th:src="@{/images/footer/ico_footer_lookbook.png}" alt="">룩북</a>
+	                            </li>
+	                            <li><a href=""><img th:src="@{/images/footer/ico_footer_youtube.png}" alt="">유튜브</a>
+	                            </li>
+	                            <li><a href=""><img th:src="@{/images/footer/ico_footer_instagram.png}" alt="">인스타그램</a>
+	                            </li>
+	                        </ul>
+	                        <div class="right-inner">
+	                            <a>
+	                                <img th:src="@{/images/footer/footer_ico_apps.png}" alt="">
+	                                <p>App 다운로드</p>
+	                            </a>
+	                            <a>
+	                                <img th:src="@{/images/footer/footer_athome_car.png}" alt="">
+	                                <p>딜리버리 서비스</p>
+	                            </a>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="footer-right-link"></div>
+	        </div>
+	    </footer>
+      </body>
+
+    </th:block>
+</html>
