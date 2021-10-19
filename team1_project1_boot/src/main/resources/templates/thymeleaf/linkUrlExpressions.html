@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{common/layout::setContent(~{this::content})}">
+<th:block th:fragment="content">
+	<div class="card m-2">
+		<div class="card-header">
+			Link Url Expressions
+		</div>
+		<div class="card-body">
+			<a th:href="@{https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html}" 
+				class="btn btn-info btn-sm">Absolute</a>
+			<a href="update"class="btn btn-info btn-sm">Page-relative</a>
+			<a th:href="@{/thymeleaf/update}"class="btn btn-info btn-sm">Context-relative(excluded)</a>
+			<!-- WAS 내에 여러개의 app이 있을 경우 다른 app의 경로에 접근할 때 -->
+			<a th:href="@{~/thymeleaf/update}"class="btn btn-info btn-sm">Server-relative(excluded)</a>
+			
+			<hr/>
+			
+			<a th:href="@{/thymeleaf/linkUrlExpressions/t1/detail(productId=${productId},pageNo=${pageNo})}"
+				 class="btn btn-info btn-sm">URL Parameter</a>
+			<a th:href="@{/thymeleaf/linkUrlExpressions/{typeId}/detail(typeId=${typeId},productId=${productId},pageNo=${pageNo})}"
+				 class="btn btn-info btn-sm">Path Variable</a>
+			<a th:href="@{${url1}(productId=${productId},pageNo=${pageNo})}" class="btn btn-info btn-sm">URL Insert</a>
+			<a th:href="@{'/thymeleaf/linkUrlExpressions'+${url2}(productId=${productId},pageNo=${pageNo})}" class="btn btn-info btn-sm">URL Insert2</a>
+			
+		</div>
+	</div>
+</th:block>
+</th:block>
+</html>
