@@ -33,7 +33,6 @@ function setProductImgHtml(pcolor){
 	let imgView = $(".product-img-view");
 	imgView.html('');
 	let html = '';
-	
 	for(colorUrl of imgUrl[pcolor]){
 		html += '<li><a><img class="product-img" src="' + colorUrl + '"></a></li>';
 	}
@@ -149,11 +148,11 @@ function setModalOn(msg){
 			break;
 		case 'needLogin':
 			contentHtml = '<p>로그인이 필요합니다.</p><p>로그인 하시겠습니까?</p>'; 
-			btnHtml = '<a href="javascript:modalOff()" class="btn-continue">계속쇼핑하기</a><a href="' + contextPath + '/member/loginForm" class="btn-tocart">로그인 바로가기</a>';
+			btnHtml = '<a href="javascript:modalOff()" class="btn-continue">계속쇼핑하기</a><a href="' + contextPath + 'member/loginForm" class="btn-tocart">로그인 바로가기</a>';
 			break;
 		case 'duplicated':
 			contentHtml = '<p>쇼핑백에 동일 상품이 존재합니다.</p><p>쇼핑백으로 이동하시겠습니까?</p>'; 
-			btnHtml = '<a href="javascript:modalOff()" class="btn-continue">계속쇼핑하기</a><a href="' + contextPath + '/cart/content" class="btn-tocart">쇼핑백 바로가기</a>';
+			btnHtml = '<a href="javascript:modalOff()" class="btn-continue">계속쇼핑하기</a><a href="' + contextPath + 'cart/content" class="btn-tocart">쇼핑백 바로가기</a>';
 			break;
 		case 'fail':
 			contentHtml = '<p>알 수 없는 이유로 실패하였습니다.</p><p>잠시 후 다시 시도해 주십시오.</p>'; 
