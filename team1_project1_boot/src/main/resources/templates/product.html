@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{common/layout::setContent(~{this::content})}">
+<th:block th:fragment="content">
+
+
+<link rel="stylesheet" th:href="@{/css/product.css}"/>
+<link rel="stylesheet" th:href="@{/css/modal.css}"/>
+
+<div class="product-container">
+    <div class="ui two column vertically padded grid product-view">
+        <div class="column">
+            <div>
+                <ul class="product-img-view"></ul>
+            </div>
+        </div>
+        
+        <div class="column">
+            <div class="info-sect">
+                <div class="product-brand">[[${product.pbrand}]]</div>
+                <p class="product-name">[[${product.pname}]]</p>
+                <div class="product-content-box">
+                	<div class="round-style">
+                		<p>[[${product.pcontent}]]</p>
+                	</div>
+                </div>
+                <p class="product-price"><i class="won sign icon"></i></p>
+                <div class="ui divider"></div>
+            </div>
+
+            <form>
+                <div class="info-sect">
+                    <ul>
+                        <li>
+                            <span class="title">색상</span>
+                            <ul class="color">
+                            	<th:block th:each="color : ${product.color}">
+                            		<li><a th:id="${color.pcolor}" class="color-item" th:href="|javascript:setHtmlByColor('${color.pcolor}')|"><img class="beige" th:src="${color.colorurl}"></a></li>
+                            	</th:block>
+	                            <li class="color-text"></li>
+                            </ul>
+                            
+                        </li>
+
+                        <li class="li-size">
+                            <span class="title">사이즈</span>
+                            <select class="ui dropdown product-size"></select>
+                        </li>
+                        
+                        <li>
+                            <div class="product-amount"></div>
+                        </li>
+
+                    </ul>
+                    
+                    <div class="ui divider"></div>
+                </div>
+    
+                <div class="info-sect">
+                    <div class="ui grid">
+                        <div class="two column row total-price">
+                            <div class="left floated column">
+                                총 합계
+                            </div>
+                            <div class="right floated column center aligned">
+                                <div class="totalPrice"></div>
+                                <a href="javascript:addCart()" class="ui button" name="addCartBtn">카트 담기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<div class="fullscreen">
+    <div class="modal">
+        <div class="close-row">
+            <a href="javascript:modalOff()"><i class="close icon"></i></a>
+        </div>
+        <div class="modal-content">
+        </div>
+        <div class="modal-btns"></div>
+    </div>
+</div>
+<script th:inline="javascript">
+	/* model data 바인딩 */
+	let imgUrl = JSON.parse([[${imgurl}]]);
+	let nowPcolor = [[${pcolor}]];
+	let nowPprice = [[${product.pprice}]];
+	let nowPcode = [[${product.pcode}]];
+	let contextPath = [[@{/}]];
+	
+	console.log(imgUrl);
+	console.log(nowPcolor);
+	console.log(nowPprice);
+	console.log(nowPcode);
+	console.log(contextPath);
+</script>
+<script th:src="@{/js/modal.js}"></script>
+<script th:src="@{/js/product.js}"></script>
+
+</th:block>
+</th:block>
+
+</html>
