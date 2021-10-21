@@ -5,8 +5,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,23 +19,25 @@ import com.mycompany.webapp.dto.ProductList;
 import com.mycompany.webapp.security.CustomUserDetails;
 import com.mycompany.webapp.service.ProductListService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class HomeController {
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@Resource
 	private ProductListService productListService;
 
 	@RequestMapping(value = { "/", "/productList" })
 	public String content(Authentication authentication) {
-		logger.info("실행");
+		log.info("실행");
 
 		if (authentication == null) {
-			logger.info("로그인한 사용자 정보 없음!!!");
+			log.info("로그인한 사용자 정보 없음!!!");
 		} else {
 			CustomUserDetails memberDetails = (CustomUserDetails) authentication.getPrincipal();
 			int mno = memberDetails.getMno();
-			logger.info("로그인한 사용자 정보 : " + mno);
+			log.info("로그인한 사용자 정보 : " + mno);
 		}
 		return "home";
 	}
@@ -49,11 +49,11 @@ public class HomeController {
 	@ResponseBody
 	public String getProductList(@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
 			@RequestParam(value = "ccode", defaultValue = "WOMEN_Top_Shirts") String ccode) {
-		logger.info("실행");
+		log.info("실행");
 		String radisKey = ccode + "_" + pageNo;
 		// Redis에 캐시된 값이 없다면
 		if (template.boundValueOps(radisKey).get() == null) {
-			logger.info("캐시가 없습니다.");
+			log.info("캐시가 없습니다.");
 			JSONObject jsonObject = new JSONObject();
 			int totalRows = productListService.getTotalProducListtNum(ccode);
 			Pager pager = new Pager(12, 10, totalRows, pageNo);
@@ -71,7 +71,7 @@ public class HomeController {
 			template.boundValueOps(radisKey).set(jsonObject.toString());
 			return jsonObject.toString();
 		}else {
-			logger.info("Cache Hit!!");
+			log.info("Cache Hit!!");
 		}
 
 		// Redis에 캐시된 값을 반환함.
@@ -80,7 +80,7 @@ public class HomeController {
 
 	@RequestMapping("/error/403")
 	public String error403() {
-		logger.info("실행");
+		log.info("실행");
 		return "error/403";
 	}
 }
