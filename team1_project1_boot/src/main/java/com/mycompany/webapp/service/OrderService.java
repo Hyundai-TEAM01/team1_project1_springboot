@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +21,11 @@ import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.ProductOrder;
 import com.mycompany.webapp.dto.ProductOrderDetail;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class OrderService {
-	private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
 	public enum OrderResult {
 		SUCCESS, ENOUGH_MPOINT, NOT_VALID, FAIL, SOLDOUT
@@ -33,13 +33,13 @@ public class OrderService {
 
 	@Resource
 	private OrderDAO orderDao;
-	
+
 	@Resource
 	private MemberDAO memberDao;
 
 	@Resource
 	private CartDAO cartDao;
-	
+
 	@Resource
 	private ProductDAO productDao;
 
@@ -77,11 +77,11 @@ public class OrderService {
 		if (pInfoList.size() != productlist.length) { // cart에 없는 물건을 구매하고자 하는 경우
 			return OrderResult.NOT_VALID;
 		}
-		
+
 		if(productDao.getProductAmountList(productlist) != null) {
 			return OrderResult.SOLDOUT;
 		}
-		
+
 
 		int sum = 0;
 		for (CartProductInfo p : pInfoList) {
@@ -89,25 +89,25 @@ public class OrderService {
 		}
 
 		sum = sum < 30000 ? sum + 2500 : sum; // 배송비 추가
-		
+
 		productOrder.setPordertotalorgprice(sum); // 구매 상품들의 가격 합 추가
-		
+
 		productOrder.setPorderpayprice(sum - productOrder.getPorderdiscount());
-		
+
 		productOrder.setPordertotalpoint((int)Math.ceil(productOrder.getPorderpayprice()*0.05));
-		
+
 		orderDao.createOrder(productOrder); // productOrder db에 추가
-		
+
 		int result = productOrder.getPorderno(); // 새롭게 생성된 sequence 값
 		if (result > 0) {
 
 			// 사용자 마일리지 차감
 			if(productOrder.getPorderdiscount() != 0)
 				memberDao.updateMemberMpoint(mno,member.getMpoint() - productOrder.getPorderdiscount());
-			
+
 			// cart에서 주문한 row isdelete 변경
 			cartDao.purchaseCartDetailList(productlist);
-			
+
 			// order detail 생성
 			List<ProductOrderDetail> porderDetailList = new ArrayList<>();
 			for(CartProductInfo info : pInfoList) {
@@ -121,22 +121,22 @@ public class OrderService {
 				pod.setPodstatus("결제완료");
 				porderDetailList.add(pod);
 			}
-			
-			logger.info("카트 디테일 생성 전");
+
+			log.info("카트 디테일 생성 전");
 			orderDao.createOrderDetailByList(porderDetailList);
-			
+
 			// 상품 재고 감소 시키기!
-			
+
 			for(ProductOrderDetail pod : porderDetailList) {
 				int amount = productDao.getProductAmount(pod.getPcode(), pod.getPsize(), pod.getPcolor());
 				amount -= pod.getPodamount();
 				productDao.updateProductStock(pod.getPcode(), pod.getPsize(), pod.getPcolor(), amount);
 			}
-			
+
 			for(ProductOrderDetail pod : porderDetailList) {
 				productDao.productEnabledUpdate(pod.getPcode());
 			}
-			
+
 			return OrderResult.SUCCESS;
 		}
 		return OrderResult.FAIL;

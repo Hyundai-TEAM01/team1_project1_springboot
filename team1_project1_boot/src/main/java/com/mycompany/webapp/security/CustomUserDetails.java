@@ -1,6 +1,5 @@
 package com.mycompany.webapp.security;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -23,11 +22,11 @@ public class CustomUserDetails extends User{
 		this.mpoint = mpoint;
 		this.mname = mname;
 	}
-	
+
 	public int getMno() {
 		return mno;
 	}
-	
+
 	public int getMpoint() {
 		return mpoint;
 	}
