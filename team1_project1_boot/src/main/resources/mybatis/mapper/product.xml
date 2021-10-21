@@ -29,7 +29,7 @@
 				FROM pcategory pca 
 				JOIN product prod ON pca.pcode = prod.pcode
 				WHERE ccode LIKE #{ccode}||'%'
-				ORDER BY enabled, pdate DESC, pcode
+				ORDER BY pdate DESC, pcode
 			)
 			WHERE rownum &lt;= #{pager.endRowNo}
 		)

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="~{common/layout::setContent(~{this::content})}">
+<th:block th:replace="~{common/layout2::setContent(~{this::content})}">
 <th:block th:fragment="content">
 
 <link rel="stylesheet" th:href="@{/css/order.css}">
@@ -258,159 +258,159 @@
 
 		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
         <script th:inline="javascript">
-        const myMpoint = [[${mpoint}]];
-        const pList = [[${pList}]];
-        const inputs = $("input");
-        $(function () {
-            // 쇼핑백에서 가져온 상품 목록
-            var productList = "";
-
-            for(item of pList){
-            	productList += item+",";
-            }
-            
-            console.log(productList);
-            
-            productList = productList.slice(0,-1);
-
-            $.ajax({
-                url : "getOrderList",
-                data : {"productList":productList}
-            }).done((data)=>{
-                for(item of data.infoList[0]){
-                    createProduct(item);
-                }
-                setSumPrice();
-                setTotalPrice();
-                
-            });
-            
-            
-            
-            $("input:radio[name='porderpayment']").click(function () {
-                let payment = $("input:checked[name='porderpayment']").attr("id");
-                let info = $("div.payment-info");
-                info.html("");
-                let str = "";
-
-                if (payment === "card") {
-                    str += '<div class="inline fields">';
-                    str += '<select required name="porderpayname" class="small-input">';
-                    str +=  '<option value="">카드사</option>';
-                    str +=  '<option value="현대">현대</option>';
-                    str += '<option value="비씨">비씨</option>';
-                    str += '<option value="국민">국민</option>';
-                    str += '</select>';
-                    
-                    str += '<input class="ui input" type="text" minlength="16" maxlength="16" placeholder="카드번호" required name="porderpayno" pattern="[0-9]+" autocomplete="off"/>';
-                    
-                    str += '<select required name="porderpayinstallment" class="small-input">';
-                    str += '<option value="일시불">일시불</option>';
-                    str += '<option value="3개월">3개월</option>';
-                    str += '<option value="6개월">6개월</option>';
-                    str += '<option value="12개월">12개월</option>';
-                    str += '</select>';
-                    str += '</div>';                    
-                } else if (payment === "cash") {
-                    str += '<div class="inline fields">';
-                    str += '<div class="three wide field">';
-                    str += '<select class="ui selection dropdown bank-seletion" required name="porderpayname">';
-                    str += '<option value="">은행사</option>';
-                    str += '<option value="국민">국민</option>';
-                    str += '<option value="농협">농협</option>';
-                    str += '<option value="하나">하나</option>';
-                    str += "</select>";
-                    str += "</div>";
-                    str += '<div class="ten wide field">';
-                    str += '<input type="text" value="123412341234" name="porderpayno" readonly>';
-                    str += "</div>";
-                    str += "</div>";
-                }
-
-                info.html(str);
-            });
-            
-            // 이메일 입력 설정
-            let s_email = $("select[name='select-email']");
-            s_email.change(function () {
-                if(s_email.val() !== ""){
-                    $("#s_email").val(s_email.val()).prop('readonly',true);
-                }else{
-                $("#s_email").val(s_email.val()).prop('readonly',false);
-                }
-            });
-            
-            // 이메일 입력 시 뒤에 부분 필수 처리
-            $("input[name='porderemail']").change(function(){
-                if($(this).val() === ""){
-                    $("[name='s_email']").attr("required",false);
-                }else{
-                    $("[name='s_email']").attr("required",true);        	   			
-                }
-            });
-            
-            
-            
-            // 결제하기 버튼 이벤트 할당
-            $(".pay-btn").click(order);
-            
-            // 마일리지 적용 버튼 이벤트 할당
-            $(".m-apply").click(function(){
-                event.preventDefault();
-                let mpoint = $("input[name='porderdiscount']").val();
-                if(mpoint !== ""){
-                    let realm = Math.floor(parseInt(mpoint)/100) * 100;
-					realm = realm < 0 ? 0 : realm;
-                    realm = realm > parseInt(myMpoint) ? myMpoint : realm;
-                    $("input[name='porderdiscount']").val(realm);
-
-                    if($(".usedMpoint").length != 0){
-                        $(".m-discount").html(realm);
-                        setTotalPrice();
-                    }else{               				
-                        let html = '<div class="row usedMpoint">';
-                        html += '<div class="six wide column left aligned">마일리지</div>';
-                        html += '<div class="ten wide column right aligned"><i class="minus icon small"></i>&nbsp<i class="won sign icon small"></i><span class="m-discount">'+realm+'</span></div></div>';
-                        $(".color-555-small").append(html);    
-                        setTotalPrice();
-                    }
-                    
-                }
-            });
-            
-        	// custom error message
-            const validityMessage = {
-	              badInput: "잘못된 입력입니다.",
-	              patternMismatch: "숫자만 입력해주세요.",
-	              rangeOverflow: "입력 범위를 초과하였습니다.",
-	              rangeUnderflow: "입력 값이 부족합니다.",
-	              stepMismatch: "간격에 맞게 입력하세요.",
-	              tooLong: "입력하신 정보를 다시 확인해주세요.",
-	              tooShort: "입력하신 정보를 다시 확인해주세요.",
-	              typeMismatch: "형식에 맞게 입력하세요.",
-	              valueMissing: "필수입력 사항입니다.",
-            }
-            
-        	function getValidityMessage(vali){
-        		for(let key in validityMessage){
-        			if(vali[key]){
-        				return validityMessage[key];
-        			}
-        		}
-        	}
-        	
-        	inputs.each((idx,item)=>{
-        		item.addEventListener("invalid",()=>{
-        			showError(item);
-                });
-        	});
-        	
-        	function showError(input){
-        		input.setCustomValidity(getValidityMessage(input.validity) || "");
-        	}
-        	
-            
-        });
+	        const myMpoint = [[${mpoint}]];
+	        const pList = [[${pList}]];
+	        const inputs = $("input");
+	        $(function () {
+	            // 쇼핑백에서 가져온 상품 목록
+	            var productList = "";
+	
+	            for(item of pList){
+	            	productList += item+",";
+	            }
+	            
+	            console.log(productList);
+	            
+	            productList = productList.slice(0,-1);
+	
+	            $.ajax({
+	                url : "getOrderList",
+	                data : {"productList":productList}
+	            }).done((data)=>{
+	                for(item of data.infoList[0]){
+	                    createProduct(item);
+	                }
+	                setSumPrice();
+	                setTotalPrice();
+	                
+	            });
+	            
+	            
+	            
+	            $("input:radio[name='porderpayment']").click(function () {
+	                let payment = $("input:checked[name='porderpayment']").attr("id");
+	                let info = $("div.payment-info");
+	                info.html("");
+	                let str = "";
+	
+	                if (payment === "card") {
+	                    str += '<div class="inline fields">';
+	                    str += '<select required name="porderpayname" class="small-input">';
+	                    str +=  '<option value="">카드사</option>';
+	                    str +=  '<option value="현대">현대</option>';
+	                    str += '<option value="비씨">비씨</option>';
+	                    str += '<option value="국민">국민</option>';
+	                    str += '</select>';
+	                    
+	                    str += '<input class="ui input" type="text" minlength="16" maxlength="16" placeholder="카드번호" required name="porderpayno" pattern="[0-9]+" autocomplete="off"/>';
+	                    
+	                    str += '<select required name="porderpayinstallment" class="small-input">';
+	                    str += '<option value="일시불">일시불</option>';
+	                    str += '<option value="3개월">3개월</option>';
+	                    str += '<option value="6개월">6개월</option>';
+	                    str += '<option value="12개월">12개월</option>';
+	                    str += '</select>';
+	                    str += '</div>';                    
+	                } else if (payment === "cash") {
+	                    str += '<div class="inline fields">';
+	                    str += '<div class="three wide field">';
+	                    str += '<select class="ui selection dropdown bank-seletion" required name="porderpayname">';
+	                    str += '<option value="">은행사</option>';
+	                    str += '<option value="국민">국민</option>';
+	                    str += '<option value="농협">농협</option>';
+	                    str += '<option value="하나">하나</option>';
+	                    str += "</select>";
+	                    str += "</div>";
+	                    str += '<div class="ten wide field">';
+	                    str += '<input type="text" value="123412341234" name="porderpayno" readonly>';
+	                    str += "</div>";
+	                    str += "</div>";
+	                }
+	
+	                info.html(str);
+	            });
+	            
+	            // 이메일 입력 설정
+	            let s_email = $("select[name='select-email']");
+	            s_email.change(function () {
+	                if(s_email.val() !== ""){
+	                    $("#s_email").val(s_email.val()).prop('readonly',true);
+	                }else{
+	                $("#s_email").val(s_email.val()).prop('readonly',false);
+	                }
+	            });
+	            
+	            // 이메일 입력 시 뒤에 부분 필수 처리
+	            $("input[name='porderemail']").change(function(){
+	                if($(this).val() === ""){
+	                    $("[name='s_email']").attr("required",false);
+	                }else{
+	                    $("[name='s_email']").attr("required",true);        	   			
+	                }
+	            });
+	            
+	            
+	            
+	            // 결제하기 버튼 이벤트 할당
+	            $(".pay-btn").click(order);
+	            
+	            // 마일리지 적용 버튼 이벤트 할당
+	            $(".m-apply").click(function(){
+	                event.preventDefault();
+	                let mpoint = $("input[name='porderdiscount']").val();
+	                if(mpoint !== ""){
+	                    let realm = Math.floor(parseInt(mpoint)/100) * 100;
+						realm = realm < 0 ? 0 : realm;
+	                    realm = realm > parseInt(myMpoint) ? myMpoint : realm;
+	                    $("input[name='porderdiscount']").val(realm);
+	
+	                    if($(".usedMpoint").length != 0){
+	                        $(".m-discount").html(realm);
+	                        setTotalPrice();
+	                    }else{               				
+	                        let html = '<div class="row usedMpoint">';
+	                        html += '<div class="six wide column left aligned">마일리지</div>';
+	                        html += '<div class="ten wide column right aligned"><i class="minus icon small"></i>&nbsp<i class="won sign icon small"></i><span class="m-discount">'+realm+'</span></div></div>';
+	                        $(".color-555-small").append(html);    
+	                        setTotalPrice();
+	                    }
+	                    
+	                }
+	            });
+	            
+	        	// custom error message
+	            const validityMessage = {
+		              badInput: "잘못된 입력입니다.",
+		              patternMismatch: "숫자만 입력해주세요.",
+		              rangeOverflow: "입력 범위를 초과하였습니다.",
+		              rangeUnderflow: "입력 값이 부족합니다.",
+		              stepMismatch: "간격에 맞게 입력하세요.",
+		              tooLong: "입력하신 정보를 다시 확인해주세요.",
+		              tooShort: "입력하신 정보를 다시 확인해주세요.",
+		              typeMismatch: "형식에 맞게 입력하세요.",
+		              valueMissing: "필수입력 사항입니다.",
+	            }
+	            
+	        	function getValidityMessage(vali){
+	        		for(let key in validityMessage){
+	        			if(vali[key]){
+	        				return validityMessage[key];
+	        			}
+	        		}
+	        	}
+	        	
+	        	inputs.each((idx,item)=>{
+	        		item.addEventListener("invalid",()=>{
+	        			showError(item);
+	                });
+	        	});
+	        	
+	        	function showError(input){
+	        		input.setCustomValidity(getValidityMessage(input.validity) || "");
+	        	}
+	        	
+	            
+	        });
         </script>
         <script th:src="@{/js/order.js}"></script>
 

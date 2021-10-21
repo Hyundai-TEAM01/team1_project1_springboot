@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{common/layout::setContent(~{this::content})}">
+<th:block th:fragment="content">
+
+<link rel="stylesheet" th:href="@{/css/error.css}">
+
+<div class="error-container">
+	<div class="ui card custom-card">
+	  <div class="content">
+	    <div class="header"><i class="exclamation icon"></i>잘못된 경로로 요청하였습니다.</div>
+	  </div>
+	  <div class="extra content">
+	    <h4 class="ui sub header error-content">요청한 URL을 확인해주세요.</h4>
+	    <div class="btn-wrap">
+		    <a th:href="@{/}" class="ui red button small home-btn">홈으로가기</a>
+	    </div>
+	  </div>
+	</div>
+</div>
+
+
+</th:block>
+</th:block>
+
+</html>

@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +16,12 @@ import com.mycompany.webapp.dao.MemberDAO;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.security.CustomUserDetails;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MemberDetailsService implements UserDetailsService {
 	// Spring Security User 상속받아 로그인한 유저정보에 추가로 원하는 데이터를 넣음
-	private static final Logger logger = LoggerFactory.getLogger(MemberDetailsService.class);
 
 	@Resource
 	MemberDAO memberDAO;
@@ -33,7 +33,7 @@ public class MemberDetailsService implements UserDetailsService {
 		if (member == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		logger.info(member.toString());
+		log.info(member.toString());
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority(member.getMrole()));
 
