@@ -6,27 +6,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
-public class AuthenticationFailureHandler 
-	extends SimpleUrlAuthenticationFailureHandler  {
-	private static final Logger logger = 
-			LoggerFactory.getLogger(AuthenticationFailureHandler.class);
-	
+@Slf4j
+public class AuthenticationFailureHandler
+extends SimpleUrlAuthenticationFailureHandler  {
+
 	@Override
 	public void onAuthenticationFailure(
-			HttpServletRequest request, 
+			HttpServletRequest request,
 			HttpServletResponse response,
-			AuthenticationException exception) 
-			throws IOException, ServletException {
-		logger.info("실행");
+			AuthenticationException exception)
+					throws IOException, ServletException {
+		log.info("실행");
 		super.onAuthenticationFailure(request, response, exception);
 		super.setDefaultFailureUrl("/member/loginError");
 	}
