@@ -6,8 +6,6 @@ import java.util.HashMap;
 import javax.annotation.Resource;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,10 +26,12 @@ import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.CartService.CartUpdateResult;
 import com.mycompany.webapp.service.ProductListService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/product")
+@Slf4j
 public class ProductController {
-	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
 	@Resource
 	private ProductListService productListService;
@@ -41,7 +41,7 @@ public class ProductController {
 	@RequestMapping("/{pcode}")
 	public String getProduct(@PathVariable("pcode") final String pcode, @RequestParam("pcolor") String pcolor,
 			@RequestParam("ccode") String ccode, Model model) {
-		logger.info("실행");
+		log.info("실행");
 		ProductDetail productDetail = productListService.getProductDetail(pcode);
 
 		JSONObject jsonObject = new JSONObject();
@@ -60,7 +60,7 @@ public class ProductController {
 	@GetMapping(value = "/getSizeAmount", produces = "Application/json; charset=UTF-8;")
 	@ResponseBody
 	public String getSizeAmount(@RequestParam("pcode") String pcode, @RequestParam("pcolor") String pcolor) {
-		logger.info("실행");
+		log.info("실행");
 
 		ProductAmountList productAmountList = productListService.getProductDetailAmountList(pcode, pcolor);
 		String productAmountListInString = new Gson().toJson(productAmountList);
@@ -75,15 +75,15 @@ public class ProductController {
 	@PostMapping(value = "/addCart", produces = "Application/json; charset=UTF-8;")
 	@ResponseBody
 	public String addCart(@RequestBody HashMap<String, String> product, Authentication authentication) {
-		logger.info("실행");
+		log.info("실행");
 		JSONObject jsonObject = new JSONObject();
 
 		if (authentication == null) {
-			logger.info("로그인한 사용자 정보 없음!!!");
+			log.info("로그인한 사용자 정보 없음!!!");
 			jsonObject.put("msg", "needLogin");
 		} else {
 			CustomUserDetails memberDetails = (CustomUserDetails) authentication.getPrincipal();
-			logger.info("로그인한 사용자 정보 : " + memberDetails.getMno());
+			log.info("로그인한 사용자 정보 : " + memberDetails.getMno());
 			int mno = memberDetails.getMno();
 			String pcode = product.get("pcode");
 			String psize = product.get("psize");
