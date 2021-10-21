@@ -9,23 +9,18 @@ import java.util.concurrent.Future;
 import javax.annotation.Resource;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mycompany.webapp.dao.TestDao;
-import com.mycompany.webapp.security.CustomUserDetails;
-import com.mycompany.webapp.service.CouponService;
-import com.mycompany.webapp.service.CouponService.CouponEventResult;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/eventtest")
+@Slf4j
 public class TestCouponController {
-	private static final Logger logger = LoggerFactory.getLogger(TestCouponController.class);
-
 	// ExecutorService 객체 생성
 	private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
@@ -52,7 +47,7 @@ public class TestCouponController {
 
 			@Override
 			public Integer call() throws Exception {
-				logger.info(Thread.currentThread().getName() + " : 이벤트 처리");
+				log.info(Thread.currentThread().getName() + " : 이벤트 처리");
 				if (isLeft) {
 					/* 쿠폰 발급 서비스 */
 					dao.insertCoupon(mno, couponName);
@@ -68,7 +63,7 @@ public class TestCouponController {
 		};
 
 		Future<Integer> future = executorService.submit(task);
-		logger.info(Thread.currentThread().getName() + ": 큐에 작업을 저장");
+		log.info(Thread.currentThread().getName() + ": 큐에 작업을 저장");
 
 		// 이벤트 처리가 완료될 때까지 대기
 		int result = future.get();
