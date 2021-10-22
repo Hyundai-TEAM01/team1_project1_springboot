@@ -14,19 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class AuthenticationFailureHandler
-extends SimpleUrlAuthenticationFailureHandler  {
+public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	@Override
-	public void onAuthenticationFailure(
-			HttpServletRequest request,
-			HttpServletResponse response,
-			AuthenticationException exception)
-					throws IOException, ServletException {
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException exception) throws IOException, ServletException {
 		log.info("실행");
-		super.onAuthenticationFailure(request, response, exception);
-		super.setDefaultFailureUrl("/member/loginError");
+		response.sendRedirect("/member/loginError");
+
 	}
 }
-
-
